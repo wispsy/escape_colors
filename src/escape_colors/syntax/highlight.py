@@ -1,10 +1,19 @@
-"""Token styling and ANSI rendering engine."""
+"""Token styling, tokenization, and ANSI rendering engine."""
 
 from typing import Any, Iterable
 
 from .._codes import RESET
+from .lexers import get_lexer
 from .themes import Theme, get_theme
-from .tokens import normalize_token
+from .tokens import Token, normalize_token
+
+
+def tokenize(source: str, language: str) -> list[Token]:
+    """Tokenize source code in the specified language into tokens."""
+    if not isinstance(source, str):
+        raise TypeError(f"source must be str, got {type(source).__name__}")
+    lexer = get_lexer(language)
+    return lexer(source)
 
 
 def style_tokens(
@@ -38,3 +47,23 @@ def render_ansi(styled_tokens: Iterable[tuple[str, str]]) -> str:
     if current_style:
         parts.append(RESET)
     return "".join(parts)
+
+
+def highlight(
+    source_or_tokens: str | Iterable[Any],
+    language: str | None = None,
+    theme: Theme | str = "default",
+) -> str:
+    """Highlight source code or a pre-tokenized sequence into ANSI formatted text."""
+    if isinstance(source_or_tokens, str):
+        if language is None:
+            raise ValueError("language must be specified when source is a string")
+        tokens: Iterable[Any] = tokenize(source_or_tokens, language)
+    elif isinstance(source_or_tokens, Iterable):
+        tokens = source_or_tokens
+    else:
+        raise TypeError(
+            f"source_or_tokens must be str or Iterable of tokens, got {type(source_or_tokens).__name__}"
+        )
+    styled = style_tokens(tokens, theme=theme)
+    return render_ansi(styled)
