@@ -205,6 +205,75 @@ emulated; automatic printing uses plain text there.
 `strip_ansi` removes numeric SGR sequences only. These APIs format text and do not
 sanitize arbitrary terminal control commands in untrusted input.
 
+## Syntax highlighting
+
+The `escape_colors.syntax` subsystem provides semantic token classification, color themes, and styled ANSI rendering for source code and token streams.
+
+```python
+from escape_colors.syntax import highlight
+
+python_code = "def greet(name: str) -> None:\n    print(f'Hello {name}')"
+print(highlight(python_code, language="python", theme="monokai"))
+
+json_data = '{"name": "escape-colors", "version": "0.1.0"}'
+print(highlight(json_data, language="json", theme="solarized-dark"))
+```
+
+### Pre-tokenized inputs and token pipeline
+
+Tokenization is separated from styling and ANSI rendering. Applications that already produce tokens or use parsing engines can highlight pre-tokenized streams directly without redundant tokenization:
+
+```python
+from escape_colors.syntax import (
+    Token,
+    TokenType,
+    highlight,
+    render_ansi,
+    style_tokens,
+)
+
+tokens = [
+    Token(TokenType.KEYWORD, "import"),
+    Token(TokenType.TEXT, " "),
+    Token(TokenType.NAME, "sys"),
+]
+styled_ansi = highlight(tokens, theme="default")
+styled_spans = style_tokens(tokens, theme="monokai")
+output = render_ansi(styled_spans)
+```
+
+### Themes and custom styles
+
+Built-in themes include `default`, `monokai`, `solarized-dark`, and `solarized-light`. Themes can be retrieved with `get_theme(name)` or registered with `register_theme(name, styles)`:
+
+```python
+from escape_colors.syntax import TokenType, highlight, register_theme
+
+custom = register_theme(
+    "forest",
+    {
+        TokenType.KEYWORD: "bold green",
+        TokenType.FUNCTION: "bright_yellow",
+        TokenType.STRING: "yellow",
+        TokenType.COMMENT: "dim",
+    },
+)
+
+print(highlight("def hello(): pass", language="python", theme="forest"))
+```
+
+Style specifications accept named ANSI colors and styles (`"bold cyan"`), 256-color palette indices (`"color_208"`, `"bg_232"`), tuples (`("bold", "green")`), or direct escape sequences.
+
+### Optional astree integration
+
+For structured HTML parsing or integration with `astree`, install with the `syntax` extra:
+
+```sh
+python -m pip install "escape-colors[syntax]"
+```
+
+Basic color and ANSI operations remain completely dependency-free; `astree` is imported lazily only when requested.
+
 ## Verification and references
 
 `python tools/review_source.py` performs a static review using only Python's
