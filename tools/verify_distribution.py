@@ -35,7 +35,8 @@ import sys
 import escape_colors
 assert 'site-packages' in Path(escape_colors.__file__).parts, escape_colors.__file__
 assert importlib.metadata.version('escape-colors') == sys.argv[1]
-assert not importlib.metadata.requires('escape-colors')
+reqs = importlib.metadata.requires('escape-colors') or []
+assert not [r for r in reqs if 'extra ==' not in r], f'Unexpected runtime dependencies: {reqs}'
 """, VERSION, cwd=work)
     run(str(python), "-I", "-m", "unittest", "discover", "-s", str(work / "tests"), "-q", cwd=work)
     subprocess.run([str(python), "-I", "-X", "utf8", str(ROOT / "examples/basic.py")], cwd=work,
