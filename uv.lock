@@ -1,8 +1,26 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.14"
+
+[[package]]
+name = "astree"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/de/78/028d0248e31236a3e0f49251652e5d2d7427f93e7feb4263115bf4a43d71/astree-0.1.0.tar.gz", hash = "sha256:c4da48e551b46d2241e3d92f384c87ad04b0de0f7f2467f6586a91b419116cc4", size = 19177, upload-time = "2026-11-08T22:25:46.924Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e3/03/237d6981288c60dbbac2e699c97f44bf118ad8fa021baee85cf07f2827ae/astree-0.1.0-py3-none-any.whl", hash = "sha256:0b6cc157d6407945a99f89cf761915b09d91e073126b97b4e300ddf4815fada2", size = 12865, upload-time = "2026-11-08T22:25:45.553Z" },
+]
 
 [[package]]
 name = "escape-colors"
 version = "0.1.0"
 source = { editable = "." }
+
+[package.optional-dependencies]
+syntax = [
+    { name = "astree" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "astree", marker = "extra == 'syntax'" }]
+provides-extras = ["syntax"]

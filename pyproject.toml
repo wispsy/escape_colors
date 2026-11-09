@@ -9,6 +9,9 @@ authors = [
 requires-python = ">=3.14"
 dependencies = []
 
+[project.optional-dependencies]
+syntax = ["astree"]
+
 [project.urls]
 Repository = "https://github.com/wispsy/escape_colors"
 Issues = "https://github.com/wispsy/escape_colors/issues"

@@ -2,6 +2,7 @@
 
 from typing import Callable
 
+from ..astree import tokenize_html_astree
 from ..tokens import Token
 from .json import tokenize_json
 from .python import tokenize_python
@@ -36,10 +37,12 @@ def get_lexer(language: str) -> LexerFunc:
 # Register built-ins
 register_lexer("python", tokenize_python, aliases=("py", "py3"))
 register_lexer("json", tokenize_json)
+register_lexer("html", tokenize_html_astree, aliases=("htm",))
 
 __all__ = [
     "get_lexer",
     "register_lexer",
+    "tokenize_html_astree",
     "tokenize_json",
     "tokenize_python",
 ]
