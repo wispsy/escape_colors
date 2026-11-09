@@ -41,6 +41,8 @@ assert not [r for r in reqs if 'extra ==' not in r], f'Unexpected runtime depend
     run(str(python), "-I", "-m", "unittest", "discover", "-s", str(work / "tests"), "-q", cwd=work)
     subprocess.run([str(python), "-I", "-X", "utf8", str(ROOT / "examples/basic.py")], cwd=work,
                    check=True, capture_output=True, encoding="utf-8")
+    subprocess.run([str(python), "-I", "-X", "utf8", str(ROOT / "examples/syntax_highlighting.py")], cwd=work,
+                   check=True, capture_output=True, encoding="utf-8")
 
 
 def main() -> None:
