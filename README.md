@@ -39,12 +39,12 @@ uv run python tools/verify_distribution.py
 ```
 
 Install a built wheel into another Python environment with
-`uv pip install /path/to/escape_colors-0.1.0-py3-none-any.whl`.
+`uv pip install /path/to/escape_colors-0.2.0-py3-none-any.whl`.
 
 ## Releases
 
 Publish a GitHub release with a tag matching the package version, such as
-`v0.1.0`. `.github/workflows/release.yaml` tests and verifies the distributions
+`v0.2.0`. `.github/workflows/release.yaml` tests and verifies the distributions
 before publishing to PyPI through the `pypi` environment using Trusted Publishing.
 The workflow can also be run manually against an existing release tag.
 
@@ -215,7 +215,7 @@ from escape_colors.syntax import highlight
 python_code = "def greet(name: str) -> None:\n    print(f'Hello {name}')"
 print(highlight(python_code, language="python", theme="monokai"))
 
-json_data = '{"name": "escape-colors", "version": "0.1.0"}'
+json_data = '{"name": "escape-colors", "version": "0.2.0"}'
 print(highlight(json_data, language="json", theme="solarized-dark"))
 ```
 

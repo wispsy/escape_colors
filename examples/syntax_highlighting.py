@@ -22,7 +22,7 @@ PYTHON_SNIPPET = '''def calculate_total(items: list[dict], tax_rate: float = 0.0
 
 JSON_SNIPPET = '''{
   "project": "escape-colors",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "tags": ["ansi", "terminal", "syntax"],
   "active": true,
   "config": null
