@@ -1,6 +1,6 @@
 [project]
 name = "escape-colors"
-version = "0.2.0"
+version = "0.3.0"
 description = "ANSI colors, nested text styles, and portable terminal printing"
 readme = "README.md"
 authors = [
@@ -11,6 +11,7 @@ dependencies = []
 
 [project.optional-dependencies]
 syntax = ["astree"]
+markdown = ["astree>=0.1.0,<0.2", "parse-md>=0.1.0,<0.2"]
 
 [project.urls]
 Repository = "https://github.com/wispsy/escape_colors"
@@ -19,3 +20,6 @@ Issues = "https://github.com/wispsy/escape_colors/issues"
 [build-system]
 requires = ["uv_build>=0.12.19,<0.13.0"]
 build-backend = "uv_build"
+
+[tool.uv.sources]
+parse-md = { git = "https://github.com/wispsy/parse_md.git", rev = "d1eb5148bb4578272bae0364420af011695e652e" }

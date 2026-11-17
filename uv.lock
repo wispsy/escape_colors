@@ -13,14 +13,27 @@ wheels = [
 
 [[package]]
 name = "escape-colors"
-version = "0.2.0"
+version = "0.3.0"
 source = { editable = "." }
 
 [package.optional-dependencies]
+markdown = [
+    { name = "astree" },
+    { name = "parse-md" },
+]
 syntax = [
     { name = "astree" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "astree", marker = "extra == 'syntax'" }]
-provides-extras = ["syntax"]
+requires-dist = [
+    { name = "astree", marker = "extra == 'markdown'", specifier = ">=0.1.0,<0.2" },
+    { name = "astree", marker = "extra == 'syntax'" },
+    { name = "parse-md", marker = "extra == 'markdown'", git = "https://github.com/wispsy/parse_md.git?rev=d1eb5148bb4578272bae0364420af011695e652e" },
+]
+provides-extras = ["syntax", "markdown"]
+
+[[package]]
+name = "parse-md"
+version = "0.1.0"
+source = { git = "https://github.com/wispsy/parse_md.git?rev=d1eb5148bb4578272bae0364420af011695e652e#d1eb5148bb4578272bae0364420af011695e652e" }

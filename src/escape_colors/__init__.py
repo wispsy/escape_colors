@@ -15,6 +15,8 @@ from ._parser import render as _render
 from ._terminal import color_enabled as _color_enabled
 from ._terminal import init_windows
 
+__version__ = "0.3.0"
+
 ESCAPE_COLOR_FORMAT = _os.environ.get("ESCAPE_COLOR_FORMAT", "unicode")
 reset = escape
 
@@ -69,6 +71,7 @@ def ansi_print(
 
 
 __all__ = [
+    "__version__",
     "ESCAPE_COLOR_FORMAT",
     "ansi_print",
     "background",
