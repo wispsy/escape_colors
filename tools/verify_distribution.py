@@ -37,12 +37,25 @@ assert 'site-packages' in Path(escape_colors.__file__).parts, escape_colors.__fi
 assert importlib.metadata.version('escape-colors') == sys.argv[1]
 reqs = importlib.metadata.requires('escape-colors') or []
 assert not [r for r in reqs if 'extra ==' not in r], f'Unexpected runtime dependencies: {reqs}'
+assert not any('git+' in r for r in reqs), reqs
+assert not {'astree', 'parse_md'}.intersection(sys.modules)
 """, VERSION, cwd=work)
     run(str(python), "-I", "-m", "unittest", "discover", "-s", str(work / "tests"), "-q", cwd=work)
     subprocess.run([str(python), "-I", "-X", "utf8", str(ROOT / "examples/basic.py")], cwd=work,
                    check=True, capture_output=True, encoding="utf-8")
     subprocess.run([str(python), "-I", "-X", "utf8", str(ROOT / "examples/syntax_highlighting.py")], cwd=work,
                    check=True, capture_output=True, encoding="utf-8")
+    # The package declares ordinary registry dependencies. Until parse-md is
+    # published, its explicit development source is pinned by the lockfile.
+    requirements = work / "markdown-requirements.txt"
+    run("uv", "export", "--frozen", "--extra", "markdown", "--no-dev", "--no-emit-project",
+        "--no-hashes", "--output-file", str(requirements), cwd=ROOT)
+    run("uv", "pip", "install", "--python", str(python), "-r", str(requirements), cwd=work)
+    run("uv", "pip", "check", "--python", str(python), cwd=work)
+    run(str(python), "-I", "-W", "error::ResourceWarning", "-m", "unittest", "discover", "-s", str(work / "tests"), "-q", cwd=work)
+    subprocess.run([str(python), "-I", "-X", "utf8", str(ROOT / "examples/markdown_rendering.py")], cwd=work,
+                   check=True, capture_output=True, encoding="utf-8")
+
 
 
 def main() -> None:

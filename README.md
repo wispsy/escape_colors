@@ -39,12 +39,12 @@ uv run python tools/verify_distribution.py
 ```
 
 Install a built wheel into another Python environment with
-`uv pip install /path/to/escape_colors-0.2.0-py3-none-any.whl`.
+`uv pip install /path/to/escape_colors-0.3.0-py3-none-any.whl`.
 
 ## Releases
 
 Publish a GitHub release with a tag matching the package version, such as
-`v0.2.0`. `.github/workflows/release.yaml` tests and verifies the distributions
+`v0.3.0`. `.github/workflows/release.yaml` tests and verifies the distributions
 before publishing to PyPI through the `pypi` environment using Trusted Publishing.
 The workflow can also be run manually against an existing release tag.
 
@@ -297,3 +297,64 @@ printing, and Windows API behavior. Visual support still depends on the terminal
 - [Xterm control sequences](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html)
 - [Windows VT sequences](https://learn.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences)
 - [SetConsoleMode](https://learn.microsoft.com/en-us/windows/console/setconsolemode)
+
+## Terminal Markdown (0.3.0 candidate)
+
+Install `escape-colors[markdown]` after publication to select the optional
+parse-md parser and Astree HTML tree profile. Core imports retain zero mandatory
+dependencies. The development lock selects the qualified parser at immutable
+commit `d1eb5148bb4578272bae0364420af011695e652e` while its PyPI release is pending;
+published wheel metadata declares ordinary versioned registry requirements.
+Publish parse-md before publishing/consuming this extra from the registry.
+
+```python
+from escape_colors.markdown import markdown_print, render_html, render_markdown
+
+markdown_print('# Notes\n\nA **bold** paragraph.\n\n```python\nprint(1)\n```')
+plain = render_markdown('| A | B |\n| --- | --- |\n| one | two |\n', width=60)
+assert 'one' in plain
+assert render_html('<p>red(literal)</p>') == 'red(literal)'
+```
+
+Astree supplies the bounded HTML tree; Escape Colors owns terminal presentation.
+The default Markdown parser is parse-md's explicit extended document profile.
+`parser=callable` selects a synchronous alternative returning HTML, an Astree
+Document/Node, or a result with an html field. HTML/tree inputs can use render_html
+directly. No notebook model, publication policy, renderer engine or application
+URL handler is inferred. No editor or network request is launched.
+
+Headings, paragraphs, nested lists/quotes, task checkboxes, rules, links/images,
+code and readable tables have terminal layout. Python/JSON and registered code
+lexers reuse syntax themes; unknown languages use plain code. If a tree-based
+lexer would reconstruct different source, code stays plain instead of changing
+the displayed text. All code is display text; controls are escaped. HTML scripts,
+styles, templates, hidden elements and SVG decorations are omitted.
+
+`render_html` / `render_markdown` return plain text by default; color=True emits
+SGR and hyperlinks=True explicitly selects OSC 8 links for allowed absolute
+schemes. Default allowed schemes are http, https and mailto. Relative links show
+their destination as text; custom schemes need an explicit allowed_schemes
+selection. Link targets reject controls, credentials and unsafe schemes.
+Terminal styles must be numeric SGR, and source text is never interpreted as
+Escape Colors markup. The OSC format follows
+[the terminal hyperlink contract](https://iterm2.com/documentation-escape-codes.html).
+
+`markdown_print` chooses color for its destination using the existing TTY,
+NO_COLOR, TERM and Windows VT rules. Redirected/NO_COLOR output is plain unless
+color=True explicitly overrides it. Links remain off unless explicitly selected
+and styling is enabled. Width defaults to terminal columns, clamped to 8–400;
+returning functions default to width=80. CJK full-width characters and combining
+marks are counted; complex emoji/grapheme appearance remains terminal-dependent.
+Tabs expand to four spaces and line endings normalize for display. These are
+document layouts, without CSS evaluation or Rich-specific pixel/width parity.
+
+RenderLimits defaults: 2,000,000 input/tree characters, 100,000 nodes or code
+tokens, depth 64 (at most 128), 20,000 output lines and 8,000,000 encoded output
+characters. Both Markdown and produced HTML are bounded. Limit failures return
+no partial string; the print helper buffers rendering before writing. Existing
+Astree trees are inspected without mutation. Selected parser/lexer callbacks
+remain caller-owned code and must cooperate with these finite inputs.
+
+Qualify the optional profile with `uv sync --locked --extra markdown` and the
+ordinary test/distribution commands. CI and clean wheel/source installs test
+both base and optional profiles. Version preparation does not tag or publish.
