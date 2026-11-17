@@ -298,14 +298,12 @@ printing, and Windows API behavior. Visual support still depends on the terminal
 - [Windows VT sequences](https://learn.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences)
 - [SetConsoleMode](https://learn.microsoft.com/en-us/windows/console/setconsolemode)
 
-## Terminal Markdown (0.3.0 candidate)
+## Terminal Markdown (0.3.0)
 
-Install `escape-colors[markdown]` after publication to select the optional
-parse-md parser and Astree HTML tree profile. Core imports retain zero mandatory
-dependencies. The development lock selects the qualified parser at immutable
-commit `d1eb5148bb4578272bae0364420af011695e652e` while its PyPI release is pending;
-published wheel metadata declares ordinary versioned registry requirements.
-Publish parse-md before publishing/consuming this extra from the registry.
+Install `escape-colors[markdown]` to select the optional parse-md parser and
+Astree HTML tree profile. Core imports retain zero mandatory dependencies. Both
+the development lock and published metadata use versioned PyPI requirements;
+the qualified parser is parse-md 0.1.0.
 
 ```python
 from escape_colors.markdown import markdown_print, render_html, render_markdown
@@ -357,4 +355,4 @@ remain caller-owned code and must cooperate with these finite inputs.
 
 Qualify the optional profile with `uv sync --locked --extra markdown` and the
 ordinary test/distribution commands. CI and clean wheel/source installs test
-both base and optional profiles. Version preparation does not tag or publish.
+both base and optional profiles.
