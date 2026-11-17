@@ -20,6 +20,3 @@ Issues = "https://github.com/wispsy/escape_colors/issues"
 [build-system]
 requires = ["uv_build>=0.12.19,<0.13.0"]
 build-backend = "uv_build"
-
-[tool.uv.sources]
-parse-md = { git = "https://github.com/wispsy/parse_md.git", rev = "d1eb5148bb4578272bae0364420af011695e652e" }

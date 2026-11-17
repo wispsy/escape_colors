@@ -29,11 +29,15 @@ syntax = [
 requires-dist = [
     { name = "astree", marker = "extra == 'markdown'", specifier = ">=0.1.0,<0.2" },
     { name = "astree", marker = "extra == 'syntax'" },
-    { name = "parse-md", marker = "extra == 'markdown'", git = "https://github.com/wispsy/parse_md.git?rev=d1eb5148bb4578272bae0364420af011695e652e" },
+    { name = "parse-md", marker = "extra == 'markdown'", specifier = ">=0.1.0,<0.2" },
 ]
 provides-extras = ["syntax", "markdown"]
 
 [[package]]
 name = "parse-md"
 version = "0.1.0"
-source = { git = "https://github.com/wispsy/parse_md.git?rev=d1eb5148bb4578272bae0364420af011695e652e#d1eb5148bb4578272bae0364420af011695e652e" }
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f9/95/311592ec5d3ed29720a283a1a6dd876871122589163dfbb20da07462c671/parse_md-0.1.0.tar.gz", hash = "sha256:b83f44b7bee34b777af332a785d58d34722daa294c1d01823d204bcb24f076be", size = 58227, upload-time = "2026-11-17T02:20:19.752Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5a/b7/e8de6563dea1200d8aa17486f38fd438bf8ac99e92156b85ad08899165a9/parse_md-0.1.0-py3-none-any.whl", hash = "sha256:bd4d70d2d11120e8ac819e91cc789689d3644e3b7da5f26d9be30f2a20125321", size = 27408, upload-time = "2026-11-17T02:20:18.482Z" },
+]

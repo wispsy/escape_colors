@@ -45,8 +45,7 @@ assert not {'astree', 'parse_md'}.intersection(sys.modules)
                    check=True, capture_output=True, encoding="utf-8")
     subprocess.run([str(python), "-I", "-X", "utf8", str(ROOT / "examples/syntax_highlighting.py")], cwd=work,
                    check=True, capture_output=True, encoding="utf-8")
-    # The package declares ordinary registry dependencies. Until parse-md is
-    # published, its explicit development source is pinned by the lockfile.
+    # Provision optional registry versions selected by the development lock.
     requirements = work / "markdown-requirements.txt"
     run("uv", "export", "--frozen", "--extra", "markdown", "--no-dev", "--no-emit-project",
         "--no-hashes", "--output-file", str(requirements), cwd=ROOT)
